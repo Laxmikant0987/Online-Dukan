@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Online Dukan - Final</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .category-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #fff;
+      border: 2px solid #007bff;
+      border-radius: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      user-select: none;
+      font-weight: 600;
+      color: #007bff;
+    }
+    .category-btn img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+    .category-btn.active,
+    .category-btn:hover {
+      background: #007bff;
+      color: white;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fill,minmax(220px,1fr));
+      gap: 20px;
+      justify-items: center;
+    }
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      width: 220px;
+      padding: 12px;
+      text-align: center;
+      transition: box-shadow 0.3s;
+    }
+    .product-card:hover {
+      box-shadow: 0 6px 15px rgb(0 0 0 / 0.15);
+    }
+    .product-image {
+      width: 100%;
+      height: 160px;
+      object-fit: contain;
+      border-radius: 6px;
+      margin-bottom: 10px;
+    }
+    .product-name {
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 6px;
+      min-height: 44px;
+    }
+    .product-price {
+      color: #e53935;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+    .product-link {
+      display: inline-block;
+      text-decoration: none;
+      background: #007bff;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: background 0.3s;
+      font-size: 14px;
+    }
+    .product-link:hover {
+      background: #0056b3;
+    }
+    /* Responsive tweaks */
+    @media (max-width: 600px) {
+      .products {
+        grid-template-columns: repeat(auto-fill,minmax(160px,1fr));
+      }
+      .product-card {
+        width: 160px;
+        padding: 8px;
+      }
+      .product-name {
+        font-size: 14px;
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Online Dukan</h1>
+
+  <div class="categories" id="categories"></div>
+
+  <div class="products" id="products"></div>
+
+  <script>
+    // Categories and icons (cleaned up names & added icons)
+    const categories = [
+      { name: "Mobiles", icon: "https://images.squarespace-cdn.com/content/v1/5e143243e8e81546da5cd885/1620016407520-9M2XC0CQ0E7YMINRKBLT/unsplash-image-xsGxhtAsfSA.jpg" },
+      { name: "Women's Kurtis", icon: "https://www.ethnicrajasthan.com/cdn/shop/files/APKULCCSPPLFL39901ER00M_4.jpg?v=1729935271" },
+      { name: "Accessories", icon: "https://promova.com/content/accessory_79573b939f.png" },
+      { name: "Electronics", icon: "https://upload.wikimedia.org/wikipedia/commons/d/d9/Arduino_ftdi_chip-1.jpg" },
+      { name: "Smart Watches", icon: "https://m.media-amazon.com/images/I/71IaJKeus7L.jpg" },
+      { name: "TVs", icon: "https://m.media-amazon.com/images/I/31aDWE4msZL.jpg" },
+      { name: "Men's Shorts", icon: "https://5.imimg.com/data5/JT/QY/CK/SELLER-30886468/men-s-straight-shots.jpeg" },
+      { name: "Men's Casual Shoes", icon: "https://images.meesho.com/images/products/343254281/tgsag_512.webp" },
+      { name: "Men's Sport Shoes", icon: "https://m.media-amazon.com/images/I/81IhLdSyI-L._AC_UY1000_.jpg" },
+      { name: "Men's Sneakers", icon: "https://m.media-amazon.com/images/I/614aiM56siL._AC_UY1000_.jpg" },
+      { name: "Men's Shirts", icon: "https://assets.ajio.com/medias/sys_master/root/20241109/0tsd/672e8ecbf9b8ef490b10254d/-473Wx593H-700628392-brown-MODEL.jpg" },
+      { name: "Men's Jeans", icon: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcREz085HM5WdGsCnIYq0dNxa4_dUSYi_HOCbYfP5-fwA6a0657L" },
+      { name: "Watches", icon: "https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQUXKPT2_RDmKCTQKXPDcaNyGCvqelbPV1xnZdLAN_QWPKohuPOOIS2HExudcW0_CSF6sDU1lN-iy5LRQkyiE3X65NCiBcgDhcf7A67plGLtWTZWyYFH6Aa" },
+      { name: "Sunglasses", icon: "https://woggles.gumlet.io/api/catalog/products/woggles_new_image_9_12_2022/auralite_black_polarized_square_sunglasses_packaging_view_03_04_25.jpg?format=webp&w=640&dpr=1.0" },
+      { name: "Men's Kurtas", icon: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRlpOuZVnD982nCbgEXwqYHcr2hggqe6JFbhVE42q-V4Ux4GGplIxBF3QEWJGPwap6TSVypahqClIMottsTkCNt-e7cKswEQX8-fFpsItIcwb8tVCwxOuKDJw&usqp=CAc" },
+      { name: "Women's Footwear", icon: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcRM3Tzntm9qMHHLvBfrgzbBfVjI3eFPpEGt7epzI-NsrQ2a-2MVC4q0rP_AlxYVlt3IgqdFZHVZ7nE1HQyCPYU2b4FK1LsChY2zIIYL3au2lolvKC9MPgcH1g" },
+      { name: "Kitchen Items", icon: "https://images.meesho.com/images/products/483580326/frfyr_1200.jpg" },
+      { name: "Women's Jeans", icon: "https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRW7GeS2BaDykiKZdKK0yfLJ4iingBqrcgELXHRbvz3cC13iFvPHaTofHQPwuKp5ppMagODInNC8W3mxct2f3gJ9o5tGhP6zFyPCDjuqbF2PcVdV1V1qbUw&usqp=CAc" },
+      { name: "Men's T-Shirts", icon: "https://encrypted-tbn3.gstatic.com/shopping?q=tbn:ANd9GcQdr_W43cmQkHkJlXUBD3ykiXEeehk9Ver2dXGEKAGW6wab9OHr2judQGNMYjpJbMMyRH8oBs54yeNzz8iQeuTxB2qln90A0MaqKaLei1Mg1XPjRTCq-f1qKA&usqp=CAc" }
+    ];
+
+    // Your full product list (as you provided)
+    const products = [
+      {
+        name: "Samsung Galaxy A35 5G @ Rs 23999 Worth Rs 33999",
+        price: "₹23999",
+        priceValue: 23999,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Deal20%2011-1748348123.png",
+        link: "https://fktr.in/hE44hsY",
+        category: "Mobiles"
+      },
+      {
+        name: "Samsung Galaxy S24 FE 5G @ Rs 44999 Worth Rs 59999",
+        price: "₹44999",
+        priceValue: 44999,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Deal21%208-1748348292.png",
+        link: "https://fktr.in/K7GrbAu",
+        category: "Mobiles"
+      },
+      {
+        name: "women's stylish kurtis",
+        price: "₹500",
+        priceValue: 500,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Biba-1747742595.png",
+        link: "https://bitli.in/UrKNQ68",
+        category: "Women's Kurtis"
+      },
+      {
+        name: "Women's Kurtis & Kurta Sets",
+        price: "Under ₹599",
+        priceValue: 599,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Deal40%202-1745394814.png",
+        link: "https://ajiio.in/1PxT5wS",
+        category: "Women's Kurtis"
+      },
+      {
+        name: "Wallets Starting @ Rs 63",
+        price: "₹63",
+        priceValue: 63,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Deal1%2045-1747637799.png",
+        link: "https://bitli.in/PsshRBC",
+        category: "Accessories"
+      },
+      {
+        name: "Headsets Starting @ Rs 52",
+        price: "₹52",
+        priceValue: 52,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Shopsy-Headsets-1747395583.png",
+        link: "https://bitli.in/tJnVirK",
+        category: "Electronics"
+      },
+      {
+        name: "Trendy Flats Starting @ Rs 125",
+        price: "₹125",
+        priceValue: 125,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Shopsy%20Trendy%20Flats-1741154748.png",
+        link: "https://bitli.in/Otq7Vzv",
+        category: "Women's Footwear"
+      },
+      {
+        name: "Women's Branded Casual Shoes Under Rs 999",
+        price: "₹999",
+        priceValue: 999,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/71%201-1727430471.png",
+        link: "https://ajiio.in/pM0WIWr",
+        category: "Women's Footwear"
+      },
+      {
+        name: "Cookware Sets Starting @ Rs 136",
+        price: "₹136",
+        priceValue: 136,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Shopsy-Cookware%20Sets-1747395607.png",
+        link: "https://bitli.in/VT8XIIf",
+        category: "Kitchen Items"
+      },
+      {
+        name: "Min 60% Off On Cookware & Appliances",
+        price: "₹169",
+        priceValue: 169,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Deal9%2013-1736941270.png",
+        link: "https://myntr.it/BVdTGaj",
+        category: "Kitchen Items"
+      },
+      {
+        name: "Shein Under Rs 799",
+        price: "₹799",
+        priceValue: 799,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Deal3%2034-1747819808.png",
+        link: "https://ajiio.in/ar950rw",
+        category: "Women's Jeans"
+      },
+      {
+        name: "Flat 60% Off on Buda Jeans Co",
+        price: "₹240",
+        priceValue: 240,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Buda%20Jeans%20Co_1-1744868699.png",
+        link: "https://ajiio.in/ZFtSX9F",
+        category: "Women's Jeans"
+      },
+      {
+        name: "Upto 50% Off on GAP",
+        price: "₹250",
+        priceValue: 250,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/GAP-1742978816.png",
+        link: "https://ajiio.in/8XDOLeB",
+        category: "Men's T-Shirts"
+      },
+      {
+        name: "Funky Casuals Under Rs 699",
+        price: "₹116",
+        priceValue: 116,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/image%20(3)-1745577035.png",
+        link: "https://ajiio.in/h63rkyE",
+        category: "Men's T-Shirts"
+      },
+      {
+        name: "Casual Shoes Starting From Rs 151",
+        price: "starting@ 151",
+        pricevalue: 151,
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/03%2028-1738734599.jpg",
+        link: "https://bitli.in/D5Z6pei",
+        category: "Men's Casual Shoes"
+      },
+      {
+        name: "Samsung HD LED Smart Tizen TV @ Rs 14990 Worth Rs 18900",
+        price: "starting@ 14990",
+        pricevalue: "14990",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Deal19%201-1748348033.png",
+        link: "https://fktr.in/rFT4Xwo",
+        category: "TVs"
+      },
+      {
+        name: "Stylish Sunglasses Under Rs 999",
+        price: "starting@ 363",
+        pricevalue: "363",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/ajio-deal99-1718866493.png",
+        link: "https://ajiio.in/0rCoM9h",
+        category: "Sunglasses"
+      },
+      {
+        name: "Men's Ethnicwear Starting @ Rs 299",
+        price: "starting@299",
+        pricevalue: "299",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Deal-Ajio3-1696506136.png",
+        link: "https://ajiio.in/X36JGtp",
+        category: "Men's Kurtas"
+      },
+      {
+        name: "Footwear under Rs 899",
+        price: "under@ 899",
+        pricevalue: "899",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/15-1694773650.jpg",
+        link: "https://myntr.it/Bo71X6N",
+        category: "Men's Casual Shoes"
+      },
+      {
+        name: "Bluetooth Speakers Under Rs 999",
+        price: "under@999",
+        pricevalue: "999",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/Deal1%20(7)-1686302396.png",
+        link: "https://fktr.in/3b63J32",
+        category: "Electronics"
+      },
+      {
+        name: "Minimum 70% OFF On Stylish Ethnic Wear",
+        price: "starting@250",
+        pricevalue: "250",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/20-1697786685.jpg",
+        link: "https://myntr.it/EvVOxyq",
+        category: "Men's Kurtas"
+       },
+       {
+        name: "Minimum 50% Off On Jeans, Trousers & More",
+        price: "starting@499",
+        pricevalue: "499",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/24-1719225048.jpg",
+        link: "https://ajiio.in/y7SzBs2",
+        category: "Men's Jeans"
+       },
+       {
+        name: "Belts Under Rs 500 Only",
+        price: "starting@101",
+        pricevalue: "101",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/MicrosoftTeams-image%20(1)-1718258376.png",
+        link: "https://ajiio.in/7Girynv",
+        category: "Accessories"
+       },
+       {
+        name: "Stylish Watches Under Rs 500",
+        price: "starting@168",
+        pricevalue: "168",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/06-1717670463.jpg",
+        link: "https://ajiio.in/d2nM16e",
+        category: "Watches"
+       },
+       {
+        name: "Flat 75% Off on Trending Styles",
+        price: "starting@80",
+        pricevalue: "80",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/05-1717569585.jpg",
+        link: "https://ajiio.in/tAwTh3B",
+        category: "Men's Shirts"
+       },
+       {
+        name: "Caps Under Rs 599 Only",
+        price: "starting@90",
+        pricevalue: "90",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/06-1717670810.jpg",
+        link: "https://ajiio.in/kFam7n1",
+        category: "Accessories"
+       },
+       {
+        name: "Office Wear Shirts Under Rs 599",
+        price: "starting@119",
+        pricevalue: "119",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/deall88-1721213212.png",
+        link: "https://myntr.it/gStzHKI",
+        categories: "Men's Shirts"
+       },
+       {
+        name: "Festive Jewellery Under Rs 699",
+        price: "starting@87",
+        pricevalue: "87",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/MicrosoftTeams-image%20(21)-1698996101.png",
+        link: "https://myntr.it/KTWhJI2",
+        category: "Accessories"
+       },
+       {
+        name: "Sneakers & Sports Shoes Starting From Rs 300",
+        price: "Rs300",
+        price: "300",
+        image: "https://asset22.ckassets.com/resources/image/staticpage_images/23-1729665976.jpg",
+        link: "https://ajiio.in/oxlsyEQ",
+        category: "Men's Sneakers"
+       }
+      
+    ];
+
+    // DOM elements
+    const categoriesContainer = document.getElementById('categories');
+    const productsContainer = document.getElementById('products');
+
+    let selectedCategory = null;
+
+    // Create category buttons with icons
+    function renderCategories() {
+      categoriesContainer.innerHTML = '';
+
+      // Add an "All" button
+      const allBtn = document.createElement('button');
+      allBtn.textContent = 'All';
+      allBtn.className = 'category-btn' + (selectedCategory === null ? ' active' : '');
+      allBtn.onclick = () => {
+        selectedCategory = null;
+        renderCategories();
+        renderProducts();
+      };
+      categoriesContainer.appendChild(allBtn);
+
+      categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.className = 'category-btn' + (selectedCategory === cat.name ? ' active' : '');
+        btn.onclick = () => {
+          selectedCategory = cat.name;
+          renderCategories();
+          renderProducts();
+        };
+
+        const img = document.createElement('img');
+        img.src = cat.icon;
+        img.alt = cat.name + ' icon';
+        btn.appendChild(img);
+
+        const span = document.createElement('span');
+        span.textContent = cat.name;
+        btn.appendChild(span);
+
+        categoriesContainer.appendChild(btn);
+      });
+    }
+
+    // Show products filtered by category (or all)
+    function renderProducts() {
+      productsContainer.innerHTML = '';
+      let filteredProducts = selectedCategory ? products.filter(p => p.category === selectedCategory) : products;
+
+      if (filteredProducts.length === 0) {
+        productsContainer.innerHTML = `<p>No products found in this category.</p>`;
+        return;
+      }
+
+      filteredProducts.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+
+        const img = document.createElement('img');
+        img.src = product.image;
+        img.alt = product.name;
+        img.className = 'product-image';
+
+        const name = document.createElement('div');
+        name.className = 'product-name';
+        name.textContent = product.name;
+
+        const price = document.createElement('div');
+        price.className = 'product-price';
+        price.textContent = product.price;
+
+        const link = document.createElement('a');
+        link.href = product.link;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.className = 'product-link';
+        link.textContent = 'Buy Now';
+
+        card.appendChild(img);
+        card.appendChild(name);
+        card.appendChild(price);
+        card.appendChild(link);
+
+        productsContainer.appendChild(card);
+      });
+    }
+
+    // Initial render
+    renderCategories();
+    renderProducts();
+  </script>
+
+</body>
+</html>
+
