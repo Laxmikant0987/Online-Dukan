@@ -111,6 +111,43 @@
         font-size: 14px;
         min-height: auto;
       }
+      /* Style for the Shop by Brand header */
+  #shop-by-brand-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    color: #ff4500; /* bright orange */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  /* Container for brand links */
+  .brand-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 40px;
+  }
+
+  /* Style each brand link */
+  .brand-links a {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+    text-decoration: none;
+    padding: 10px 25px;
+    border: 3px solid #ff4500;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 2px 2px 8px rgba(255, 69, 0, 0.2);
+  }
+
+  .brand-links a:hover {
+    background-color: #ff4500;
+    color: white;
+    box-shadow: 2px 2px 15px rgba(255, 69, 0, 0.6);
+  }
     }
   </style>
 </head>
@@ -120,8 +157,18 @@
   <div class="categories" id="categories"></div>
 
   <div class="products" id="products"></div>
-
-  <script>
+  <!-- Shop by Brand Section -->
+<h2 style="margin-top: 30px;">Shop by Brand</h2>
+<div class="brand-links">
+  <a href="https://fktr.in/kBHVcVR" target="_blank">Flipkart</a>
+  <a href="https://myntr.it/vw8V2O7" target="_blank">Myntra</a>
+  <a href="https://ajiio.in/1h8o6iK" target="_blank">AJIO</a>
+  <a href="https://bitli.in/9Bdn1WO" target="_blank">Shopsy</a>
+  <a href="https://bitli.in/pIdYmTY" target="_blank">Nykaa</a>
+  <a href="https://bitli.in/7bkbzmZ" target="_blank">BuyKaro</a>
+  <a href="https://bitli.in/A8i0jo0" target="_blank">boAt</a>
+</div>
+ <script>
     // Categories and icons (cleaned up names & added icons)
     const categories = [
       { name: "Mobiles", icon: "https://images.squarespace-cdn.com/content/v1/5e143243e8e81546da5cd885/1620016407520-9M2XC0CQ0E7YMINRKBLT/unsplash-image-xsGxhtAsfSA.jpg" },
