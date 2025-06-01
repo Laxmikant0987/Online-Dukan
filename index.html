@@ -229,75 +229,48 @@
     font-size: 0.9rem;
     padding: 8px 14px;
   }
-  @media (max-width: 600px) {
-  /* Category grid: show 2 per row */
-  .category-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 0 8px;
-  }
+.mobile-category-section {
+  margin-top: 20px;
+  padding: 0 10px;
+}
 
-  .category-card {
-    font-size: 0.9rem;
-    padding: 8px;
-    text-align: center;
-  }
+.category-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
 
-  .category-card img {
-    width: 36px;
-    height: 36px;
-  }
+.category-scroll {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding-bottom: 10px;
+  scroll-snap-type: x mandatory;
+}
 
-  /* Shop by Brand header */
-  #shop-by-Direct\ App-title {
-    font-size: 1.6rem;
-    margin: 20px 0 12px;
-    text-align: center;
-  }
+.category-item {
+  flex: 0 0 auto;
+  text-align: center;
+  scroll-snap-align: start;
+  width: 80px;
+}
 
-  /* Brand links stacked */
-  .brand-links {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
-    padding: 0 12px;
-  }
+.category-item img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 50%;
+  border: 2px solid #eee;
+  background: #fff;
+}
 
-  .brand-links a {
-    font-size: 1.1rem;
-    padding: 10px;
-    text-align: center;
-  }
-
-  /* Product grid: single column */
-  .product-grid {
-    grid-template-columns: 1fr;
-    gap: 15px;
-    padding: 0 10px;
-  }
-
-  .product-card img {
-    max-height: 160px;
-    object-fit: contain;
-  }
-
-  .product-card h3 {
-    font-size: 1rem;
-  }
-
-  .product-card p {
-    font-size: 0.9rem;
-  }
-
-  .product-card .price {
-    font-size: 1.1rem;
-  }
-
-  .product-card a.button {
-    font-size: 0.9rem;
-    padding: 8px 12px;
-  }
-
+.category-item span {
+  display: block;
+  font-size: 0.85rem;
+  margin-top: 5px;
+  color: #555;
+}
 }
  </style>
 </head>
