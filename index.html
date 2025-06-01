@@ -148,133 +148,24 @@
     color: white;
     box-shadow: 2px 2px 15px rgba(255, 69, 0, 0.6);
   }
-      /* ========== Mobile Styles (max 600px) ========== */
-@media (max-width: 600px) {
-  /* CATEGORY Section */
-  .category-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 per row */
-    gap: 12px;
-    padding: 0 10px;
-  }
-
-  .category-card {
-    padding: 10px;
-    font-size: 0.9rem;
-    text-align: center;
-  }
-
-  .category-card img {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 6px;
-  }
-
-  /* SHOP BY BRAND Section */
-  #shop-by-Direct\ App-title {
-    font-size: 1.6rem;
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 12px;
-  }
-
-  .brand-links {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 0 12px;
-  }
-
-  .brand-links a {
-    font-size: 1.2rem;
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    text-align: center;
-  }
-
-  /* PRODUCT Section */
-  .product-grid {
-    grid-template-columns: 1fr; /* 1 per row */
-    gap: 15px;
-    padding: 0 10px;
-  }
-
-  .product-card {
-    padding: 10px;
-    border-radius: 10px;
-  }
-
-  .product-card img {
-    width: 100%;
-    height: auto;
-    max-height: 180px;
-    object-fit: contain;
-  }
-
-  .product-card h3 {
-    font-size: 1rem;
-    margin: 8px 0;
-  }
-
-  .product-card p {
-    font-size: 0.9rem;
-  }
-
-  .product-card .price {
-    font-size: 1.1rem;
-    font-weight: bold;
-  }
-
-  .product-card a.button {
-    font-size: 0.9rem;
-    padding: 8px 14px;
-  }
-.mobile-category-section {
-  margin-top: 20px;
-  padding: 0 10px;
-}
-
-.category-title {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.category-scroll {
-  display: flex;
-  overflow-x: auto;
-  gap: 10px;
-  padding-bottom: 10px;
-  scroll-snap-type: x mandatory;
-}
-
-.category-item {
-  flex: 0 0 auto;
+      .top-yellow-banner {
+  background-color: #fff9c4; /* Light yellow */
+  padding: 10px 0;
   text-align: center;
-  scroll-snap-align: start;
-  width: 80px;
+  font-weight: bold;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #665500; /* A nice darker contrast color */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-
-.category-item img {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
-  border-radius: 50%;
-  border: 2px solid #eee;
-  background: #fff;
-}
-
-.category-item span {
-  display: block;
-  font-size: 0.85rem;
-  margin-top: 5px;
-  color: #555;
-}
-}
+    }
  </style>
 </head>
 <body>
+  <div class="top-yellow-banner">
+  <!-- You can add text or leave it blank -->
+  <p>Welcome to Online Dukan! Great deals every day.</p>
+</div>
+
   <h1>Online Dukan</h1>
 
   <div class="categories" id="categories"></div>
